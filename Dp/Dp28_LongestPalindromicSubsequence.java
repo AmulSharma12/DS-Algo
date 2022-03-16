@@ -27,14 +27,14 @@ public class Dp28_LongestPalindromicSubsequence
 		        int m = y.length();
 		        int[][] dp = new int[n+1][m+1];
 		        
-		        for(int[] element : dp)
-		        {
-		            Arrays.fill(element, -1);
-		        }
-		        return lcsR(n, m, x, y, dp);
+		        // for(int[] element : dp)
+		        // {
+		        //     Arrays.fill(element, -1);
+		        // }
+		        return lcsT(n, m, x, y, dp);
 		    }
     
-    
+    // recursive + memoisation solution lcs
     public static int lcsR(int i, int j, String x, String y, int[][] dp)
     {
         if(i == 0 || j == 0)
@@ -47,6 +47,31 @@ public class Dp28_LongestPalindromicSubsequence
             return dp[i][j] = 1 + lcsR(i-1, j-1, x, y, dp);
         
         return dp[i][j] = Math.max(lcsR(i, j-1, x, y, dp), lcsR(i-1, j, x, y, dp));
+    }
+
+
+
+
+    // tabulation solution lcs
+    public static int lcsT(int n, int m, String x, String y, int[][] dp)
+    {
+    	// base case already 0 
+
+
+    	//exploring all the index
+    	for(int i = 1; i<=n; i++)
+    	{
+    		for(int j = 1; j<=m; j++)
+    		{
+				if(x.charAt(i-1) == y.charAt(j-1))
+		    		dp[i][j] = 1 + dp[i-1][j-1];
+		    	  else
+		    		dp[i][j] = Math.max(dp[i][j-1] , dp[i-1][j]);
+    		}
+    	}
+
+
+    	return dp[m][n];
     }
 
 }
