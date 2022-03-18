@@ -79,4 +79,38 @@ public class Dp33_EditDistance
         
         return dp[n][m];
     }
+
+    //2Array space optimisation 
+    public static int minOperationsT(int n, int m, String x, String y)
+    {
+        int[] prev = new int[m+1];
+        int[] curr = new int[m+1];
+        
+       //for i == 0 every j [0...m] is j only
+        for(int j = 0; j<=m; j++)
+            prev[j] = j;
+        
+        
+        
+        //explore all the possibilities now
+        for(int i = 1; i<=n; i++)
+        {
+            curr[0] = i;
+            for(int j = 1; j<=m; j++)
+            {
+                if(x.charAt(i-1) == y.charAt(j-1))
+                    curr[j] =  0 + prev[j-1];
+                else
+                    curr[j] = 1 +  Math.min(curr[j-1] , Math.min(prev[j] , prev[j-1]));
+            }
+            
+            //switching the referecnce
+            int[] temp = prev;
+            prev = curr;
+            curr = temp;
+        }
+        
+        
+        return prev[m];
+    }
 }
