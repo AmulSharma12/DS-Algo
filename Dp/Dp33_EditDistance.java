@@ -18,11 +18,11 @@ public class Dp33_EditDistance
        int m = word2.length();
         int[][] dp = new int[n+1][m+1];
         
-        for(int[] element : dp)
-        {
-            Arrays.fill(element, -1);
-        }
-        return minOperations(n, m, word1, word2, dp);
+        // for(int[] element : dp)
+        // {
+        //     Arrays.fill(element, -1);
+        // }
+        return minOperationsT(n, m, word1, word2, dp);
         
     }
     
@@ -49,5 +49,34 @@ public class Dp33_EditDistance
         int replace = 1 + minOperations(i-1, j-1, x, y, dp);
         
         return dp[i][j] =  Math.min(ins, Math.min( del, replace));
+    }
+
+
+    //tabulation approach
+    public static int minOperationsT(int n, int m, String x, String y, int[][] dp)
+    {
+       //for i == 0 every j [0...m] is j only
+        for(int j = 0; j<=m; j++)
+            dp[0][j] = j;
+        
+        //for every j == 0   every i[0...n]  is i only
+        for(int i = 0; i<=n; i++)
+            dp[i][0] = i;
+        
+        
+        //explore all the possibilities now
+        for(int i = 1; i<=n; i++)
+        {
+            for(int j = 1; j<=m; j++)
+            {
+                if(x.charAt(i-1) == y.charAt(j-1))
+                    dp[i][j] =  0 + dp[i-1][j-1];
+                else
+                    dp[i][j] = 1 +  Math.min(dp[i][j-1] , Math.min(dp[i-1][j] , dp[i-1][j-1]));
+            }
+        }
+        
+        
+        return dp[n][m];
     }
 }
