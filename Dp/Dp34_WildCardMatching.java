@@ -71,4 +71,116 @@ public class Dp34_WildCardMatching
         dp[i][j] = 0;
         return false;
     }
+
+
+    //tabulation approach
+     public static boolean wcMatching(int n, int m, String x, String y)
+    {
+        boolean[][] dp = new boolean[n+1][m+1];
+        dp[0][0] = true;
+        
+        for(int j = 1; j<=m; j++)
+            dp[0][j] = false;
+        
+      
+        //base case - 3
+        for(int i = 1; i<=n; i++)
+        {
+            boolean flag = true;
+            for(int l = 1; l<=i; l++)
+            {
+                if(x.charAt(l-1) != '*')
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            
+            dp[i][0] = flag;
+        }
+        
+        
+       
+        //filling dp table
+        for(int i = 1; i<=n; i++)
+        {
+            for(int j = 1; j<=m; j++)
+            {
+                //exploring all the possibilities
+                if((x.charAt(i-1) == y.charAt(j-1))  || (x.charAt(i-1) == '?'))
+                {
+                    dp[i][j]  = dp[i-1][j-1];
+                   
+                }        
+                //unmatch case
+                else if(x.charAt(i-1) == '*')
+                {
+                    dp[i][j]  = dp[i][j-1] || dp[i-1][j];
+                }
+
+                else dp[i][j] = false;
+             } 
+        }
+        
+        
+        return dp[n][m];
+    }
+
+
+    // space optimisation approach
+    public static  boolean wcMatching(int n, int m, String x, String y)
+    {
+        boolean[] prev = new boolean[m+1];
+        boolean[] curr = new boolean[m+1];
+        
+        prev[0] = true;
+        
+        for(int j = 1; j<=m; j++)
+            prev[j] = false;
+        
+      
+       
+       
+        //filling dp table
+        for(int i = 1; i<=n; i++)
+        {
+            //for every row there will be a updated 0th j column
+            boolean flag = true;
+            for(int l = 1; l<=i; l++)
+            {
+                if(x.charAt(l-1) != '*')
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            
+            curr[0] = flag;
+        
+            for(int j = 1; j<=m; j++)
+            {
+                //exploring all the possibilities
+                if((x.charAt(i-1) == y.charAt(j-1))  || (x.charAt(i-1) == '?'))
+                {
+                    curr[j]  = prev[j-1];
+                   
+                }        
+                //unmatch case
+                else if(x.charAt(i-1) == '*')
+                {
+                    curr[j]  = curr[j-1] || prev[j];
+                }
+
+                else curr[j] = false;
+             } 
+            
+            //after computing the row will exchange the references
+            boolean[] temp = prev;
+            prev = curr;
+            curr  = temp;
+        }
+        
+        
+        return prev[m];
+    }
 }
