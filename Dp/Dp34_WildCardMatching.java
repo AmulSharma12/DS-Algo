@@ -16,15 +16,21 @@ public class Dp34_WildCardMatching
 
 	}
 
-	//p should contains two illegal characters
-	public static boolean isMatch(String s, String p) {
+	 //recursive + memoise code
+    public static boolean isMatch(String s, String p) {
         int n = p.length();
         int m = s.length();
-        return wcMatching(n-1, m-1, p, s);
+        int[][] dp = new int[n][m];
+        
+        for(int[] currRow : dp)
+        {
+            Arrays.fill(currRow, -1);
+        }
+        return wcMatching(n-1, m-1, p, s, dp);
     }
     
-    
-    public static boolean wcMatching(int i, int j, String x, String y)
+    // recursive + memoize code
+    public static boolean wcMatching(int i, int j, String x, String y, int[][] dp)
     {
         
         if(i<0 && j<0)
@@ -44,14 +50,25 @@ public class Dp34_WildCardMatching
         }
         
         
+        if(dp[i][j] != -1)
+            return dp[i][j] == 0 ? false : true;
+        
         //exploring all the possibilities
         if((x.charAt(i) == y.charAt(j))  || (x.charAt(i) == '?'))
-            return wcMatching(i-1, j-1, x, y);
-        
+        {
+            boolean match = wcMatching(i-1, j-1, x, y, dp);
+            dp[i][j] = match == false ? 0 : 1; 
+            return match;
+        }        
         //unmatch case
         if(x.charAt(i) == '*')
-            return  (wcMatching(i-1, j, x, y) || wcMatching(i, j-1, x, y));
+        {
+            boolean unmatch = wcMatching(i-1, j, x, y, dp) || wcMatching(i, j-1, x, y,dp);
+            dp[i][j] = unmatch == false ? 0  : 1;
+            return unmatch;
+        }
         
+        dp[i][j] = 0;
         return false;
     }
 }
