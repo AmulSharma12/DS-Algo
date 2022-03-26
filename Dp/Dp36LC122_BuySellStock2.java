@@ -106,4 +106,26 @@ public class Dp36LC122_BuySellStock2
         return ahead[1];
           
     }
+
+
+      //Using 4 variable solution -> Time Complextiy O(N*2) || Space Complextiy
+    public static int maxProf(int[] price, int n)
+    {
+        int aheadNotBuy = 0;
+        int aheadBuy = 0; 
+        
+        for(int ind = n-1 ; ind >= 0; ind--)
+        {
+            for(int buy = 0; buy<=1; buy++)
+            {
+                int currBuy = Math.max(-price[ind] + aheadNotBuy  , 0 + aheadBuy);
+                int currNotBuy = Math.max(price[ind] + aheadBuy , 0+ aheadNotBuy);
+                aheadNotBuy = currNotBuy;
+                aheadBuy = currBuy;
+            }
+        }
+        
+        return aheadBuy;
+          
+    }
 }
