@@ -4,7 +4,7 @@
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class P3_LC83_RemoveDuplicateSortedArrays
+public class P3_LC83_RemoveDuplicateSortedList
 {
 	public static void main(String[] args)
 	{
