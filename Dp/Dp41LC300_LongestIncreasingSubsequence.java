@@ -43,6 +43,30 @@ public class Dp41LC300_LongestIncreasingSubsequence
     }
 
 
+    //Approach 2 Using Tabulation
+    public static  int lis(int[] nums ,int n, int[][] dp)
+    {
+     
+        for(int ind = n-1; ind>=0; ind--)
+        {
+            for(int prevIndex = ind-1; prevIndex >= -1; prevIndex--)
+            {
+                // notTake call
+                int length = 0 + dp[ind+1][prevIndex+1];
+
+                //take call
+                if(prevIndex == -1 || nums[ind] > nums[prevIndex])
+                    length = Math.max(length, 1 + dp[ind+1][ind+1]);
+                
+                dp[ind][prevIndex+1] = length;
+                
+            }
+        }
+        
+        
+        return dp[0][-1+1];
+    }
+
 
 
 }
