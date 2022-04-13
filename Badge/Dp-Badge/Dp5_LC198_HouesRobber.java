@@ -86,4 +86,31 @@ public class Dp5_LC189_HouseRobber
         return dp[n];
     }
 
+
+     // ------------------------------------------- Approach 4 -using Space Optimisation
+    public static int rob(int[] nums) {
+        int n = nums.length;
+        return robHouse(nums, n);
+    }
+    
+    //function robHouse -> return the maximum amount of money robbed till n-1 (Last) house
+    public static int robHouse(int[] nums,  int n)  //each house represent by index ind
+    {
+       int prev2 = 0;
+       int prev = nums[0];
+
+        for(int ind = 2; ind <=n; ind++)
+        {
+                 // rob all the houses
+                int rob = nums[ind-1] + prev2;
+                int notRob = 0 + prev;
+            
+                 int curr = Math.max(rob, notRob);
+                 prev2 = prev;
+                 prev = curr;
+        }
+       
+        return prev;
+    }
+
 }
