@@ -68,5 +68,34 @@ public class Dp41LC300_LongestIncreasingSubsequence
     }
 
 
+    // Approach 3 Space Optimisation
+    public static int lis(int[] nums ,int n)
+    {
+        int[] curr = new int[n+1];
+        int[] next = new int[n+1];
+     
+        for(int ind = n-1; ind>=0; ind--)
+        {
+            for(int prevIndex = ind-1; prevIndex >= -1; prevIndex--)
+            {
+                // notTake call
+                int length = 0 + next[prevIndex+1];
+
+                //take call
+                if(prevIndex == -1 || nums[ind] > nums[prevIndex])
+                    length = Math.max(length, 1 + next[ind+1]);
+                
+                curr[prevIndex+1] = length;
+                
+            }
+            int[] temp = next;
+            next = curr;
+            curr = temp;
+        }
+        
+        
+        return next[-1+1];
+    }
+
 
 }
